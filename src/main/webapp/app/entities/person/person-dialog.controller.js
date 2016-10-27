@@ -15,7 +15,12 @@
         vm.save = save;
         vm.nominations = Nomination.query();
 
-        $timeout(function (){
+        vm.person.createCount = 0;
+        vm.person.expressCount = 0;
+        vm.person.togetherCount = 0;
+        vm.person.growCount = 0;
+
+        $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
 
