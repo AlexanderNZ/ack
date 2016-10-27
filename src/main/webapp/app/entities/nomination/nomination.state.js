@@ -95,9 +95,9 @@
                         resolve: {
                             entity: function () {
                                 return {
-                                    nominatedValue: null,
-                                    nominationReason: null,
-                                    nominationDate: null,
+                                    value: null,
+                                    reason: null,
+                                    date: null,
                                     id: null
                                 };
                             }

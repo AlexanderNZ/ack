@@ -18,55 +18,55 @@
             <div class="radio">
                 <label>
                     <input type="radio" name="valueOptions" id="growOption" value="Grow here"
-                           ng-required="!vm.nomination.nominatedValue"
-                           ng-model="vm.nomination.nominatedValue">
+                           ng-required="!vm.nomination.value"
+                           ng-model="vm.nomination.value">
                     <b>Grow</b> here
                 </label>
             </div>
             <div class="radio">
                 <label>
                     <input type="radio" name="valueOptions" id="createOption" value="Create with Purpose"
-                           ng-required="!vm.nomination.nominatedValue"
-                           ng-model="vm.nomination.nominatedValue">
+                           ng-required="!vm.nomination.value"
+                           ng-model="vm.nomination.value">
                     <b>Create</b> with Purpose
                 </label>
             </div>
             <div class="radio">
                 <label>
                     <input type="radio" name="valueOptions" id="togetherOption" value="Be great Together"
-                           ng-required="!vm.nomination.nominatedValue"
-                           ng-model="vm.nomination.nominatedValue">
+                           ng-required="!vm.nomination.value"
+                           ng-model="vm.nomination.value">
                     Be great <b>Together</b>
                 </label>
             </div>
             <div class="radio">
                 <label>
                     <input type="radio" name="valueOptions" id="expressOption" value="Express with Integrity"
-                           ng-required="!vm.nomination.nominatedValue"
-                           ng-model="vm.nomination.nominatedValue">
+                           ng-required="!vm.nomination.value"
+                           ng-model="vm.nomination.value">
                     <b>Express</b> with Integrity
                 </label>
             </div>
 
-            <div ng-show="editForm.nominatedValue.$invalid">
+            <div ng-show="editForm.value.$invalid">
                 <p class="help-block"
-                   ng-show="editForm.nominatedValue.$error.required">
+                   ng-show="editForm.value.$error.required">
                     You need to choose the value you want to nominate for!
                 </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for="field_nominationReason">Why do you want to nominate this person?</label>
-            <textarea rows="3" class="form-control" name="nominationReason" id="field_nominationReason"
-                      ng-model="vm.nomination.nominationReason"
+            <label class="control-label" for="field_reason">Why do you want to nominate this person?</label>
+            <textarea rows="3" class="form-control" name="reason" id="field_reason"
+                      ng-model="vm.nomination.reason"
                       required ng-minlength="60"/>
-            <div ng-show="editForm.nominationReason.$invalid">
+            <div ng-show="editForm.reason.$invalid">
                 <p class="help-block"
-                   ng-show="editForm.nominationReason.$error.required">
+                   ng-show="editForm.reason.$error.required">
                     This field is required.
                 </p>
                 <p class="help-block"
-                   ng-show="editForm.nominationReason.$error.minlength" translate-value-min="60">
+                   ng-show="editForm.reason.$error.minlength" translate-value-min="60">
                     This field needs to be at least 60 characters long.
                 </p>
             </div>
@@ -112,8 +112,8 @@
             <tr ng-repeat="person in vm.people track by person.id">
                 <td class="radio" style="margin: 0px"><label>
                     <input type="radio" name="id" ng-value="person"
-                           ng-model="vm.nomination.nominee"
-                           ng-required="!vm.nomination.nominee">
+                           ng-model="vm.nomination.person"
+                           ng-required="!vm.nomination.person">
                 </label></td>
                 <td>{{person.firstName}}</td>
                 <td>{{person.lastName}}</td>

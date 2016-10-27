@@ -3,6 +3,7 @@ package nz.ringfence.ack.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import nz.ringfence.ack.domain.Nomination;
 import nz.ringfence.ack.service.NominationService;
+import nz.ringfence.ack.service.PersonService;
 import nz.ringfence.ack.web.rest.util.HeaderUtil;
 import nz.ringfence.ack.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -30,9 +31,12 @@ import java.util.Optional;
 public class NominationResource {
 
     private final Logger log = LoggerFactory.getLogger(NominationResource.class);
-        
+
     @Inject
     private NominationService nominationService;
+
+    @Inject
+    private PersonService personService;
 
     /**
      * POST  /nominations : Create a new nomination.
@@ -50,6 +54,27 @@ public class NominationResource {
         if (nomination.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("nomination", "idexists", "A new nomination cannot already have an ID")).body(null);
         }
+
+        switch (nomination.getValue()) {
+            case "Grow here":
+                nomination.getPerson().setGrowCount(nomination.getPerson().getGrowCount() + 1);
+                break;
+            case "Create with Purpose":
+                nomination.getPerson().setCreateCount(nomination.getPerson().getCreateCount() + 1);
+                break;
+            case "Be great Together":
+                nomination.getPerson().setTogetherCount(nomination.getPerson().getTogetherCount() + 1);
+                break;
+            case "Express with Integrity":
+                nomination.getPerson().setExpressCount(nomination.getPerson().getExpressCount() + 1);
+                break;
+            default: log.error("Value count increment failed - there was a problem in createNomination() in NominationResource.java");
+        }
+
+        // Update person separately
+        personService.save(nomination.getPerson());
+
+        // Save as per normal
         Nomination result = nominationService.save(nomination);
         return ResponseEntity.created(new URI("/api/nominations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("nomination", result.getId().toString()))
