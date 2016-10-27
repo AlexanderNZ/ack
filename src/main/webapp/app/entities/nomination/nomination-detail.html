@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span>Nomination</span> {{vm.nomination.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Nomination Date</span></dt>
+        <dd>
+            <span>{{vm.nomination.nominationDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Reason</span></dt>
+        <dd>
+            <span>{{vm.nomination.reason}}</span>
+        </dd>
+        <dt><span>Value</span></dt>
+        <dd>
+            <span>{{vm.nomination.value}}</span>
+        </dd>
+        <dt><span>Person</span></dt>
+        <dd>
+            <a ui-sref="person-detail({id:vm.nomination.person.id})">{{vm.nomination.person.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="nomination-detail.edit({id:vm.nomination.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

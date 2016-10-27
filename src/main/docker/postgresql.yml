@@ -1,0 +1,12 @@
+version: '2'
+services:
+    ack-postgresql:
+        container_name: ack-postgresql
+        image: postgres:9.5.4
+        # volumes:
+        #     - ~/volumes/jhipster/ack/postgresql/:/var/lib/postgresql/
+        environment:
+            - POSTGRES_USER=ack
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432
