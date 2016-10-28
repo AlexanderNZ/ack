@@ -2,6 +2,7 @@ package nz.ringfence.ack.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import nz.ringfence.ack.domain.Nomination;
+import nz.ringfence.ack.domain.Person;
 import nz.ringfence.ack.service.NominationService;
 import nz.ringfence.ack.service.PersonService;
 import nz.ringfence.ack.web.rest.util.HeaderUtil;
@@ -55,30 +56,41 @@ public class NominationResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("nomination", "idexists", "A new nomination cannot already have an ID")).body(null);
         }
 
-        switch (nomination.getValue()) {
-            case "Grow here":
-                nomination.getPerson().setGrowCount(nomination.getPerson().getGrowCount() + 1);
-                break;
-            case "Create with Purpose":
-                nomination.getPerson().setCreateCount(nomination.getPerson().getCreateCount() + 1);
-                break;
-            case "Be great Together":
-                nomination.getPerson().setTogetherCount(nomination.getPerson().getTogetherCount() + 1);
-                break;
-            case "Express with Integrity":
-                nomination.getPerson().setExpressCount(nomination.getPerson().getExpressCount() + 1);
-                break;
-            default: log.error("Value count increment failed - there was a problem in createNomination() in NominationResource.java");
-        }
-
-        // Update person separately
-        personService.save(nomination.getPerson());
+        modifyCount(nomination, true);
 
         // Save as per normal
         Nomination result = nominationService.save(nomination);
         return ResponseEntity.created(new URI("/api/nominations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("nomination", result.getId().toString()))
             .body(result);
+    }
+
+    private void modifyCount(@Valid @RequestBody Nomination nomination, boolean increase) {
+        int delta;
+
+        if (increase) {
+            delta = 1;
+        } else {
+            delta = -1;}
+
+        switch (nomination.getValue()) {
+            case "Grow here":
+                nomination.getPerson().setGrowCount(nomination.getPerson().getGrowCount() + delta);
+                break;
+            case "Create with Purpose":
+                nomination.getPerson().setCreateCount(nomination.getPerson().getCreateCount() + delta);
+                break;
+            case "Be great Together":
+                nomination.getPerson().setTogetherCount(nomination.getPerson().getTogetherCount() + delta);
+                break;
+            case "Express with Integrity":
+                nomination.getPerson().setExpressCount(nomination.getPerson().getExpressCount() + delta);
+                break;
+            default: log.error("Value count increment failed - there was a problem in createNomination() in NominationResource.java");
+        }
+
+        // Update person separately
+        personService.save(nomination.getPerson());
     }
 
     /**
@@ -156,8 +168,20 @@ public class NominationResource {
     @Timed
     public ResponseEntity<Void> deleteNomination(@PathVariable Long id) {
         log.debug("REST request to delete Nomination : {}", id);
+
+        // Get the nomination
+
+        // Get the person the nomination concerns
+        Nomination nomination = nominationService.findOne(id);
+        // Decrement the appropriate count
+        modifyCount(nomination, false);
+
+        // If that was successful, delete the nomination
         nominationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("nomination", id.toString())).build();
+
+        // else return an error
+
     }
 
 }
