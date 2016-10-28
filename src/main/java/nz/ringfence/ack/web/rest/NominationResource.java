@@ -65,34 +65,6 @@ public class NominationResource {
             .body(result);
     }
 
-    private void modifyCount(@Valid @RequestBody Nomination nomination, boolean increase) {
-        int delta;
-
-        if (increase) {
-            delta = 1;
-        } else {
-            delta = -1;}
-
-        switch (nomination.getValue()) {
-            case "Grow here":
-                nomination.getPerson().setGrowCount(nomination.getPerson().getGrowCount() + delta);
-                break;
-            case "Create with Purpose":
-                nomination.getPerson().setCreateCount(nomination.getPerson().getCreateCount() + delta);
-                break;
-            case "Be great Together":
-                nomination.getPerson().setTogetherCount(nomination.getPerson().getTogetherCount() + delta);
-                break;
-            case "Express with Integrity":
-                nomination.getPerson().setExpressCount(nomination.getPerson().getExpressCount() + delta);
-                break;
-            default: log.error("Value count increment failed - there was a problem in createNomination() in NominationResource.java");
-        }
-
-        // Update person separately
-        personService.save(nomination.getPerson());
-    }
-
     /**
      * PUT  /nominations : Updates an existing nomination.
      *
@@ -169,19 +141,40 @@ public class NominationResource {
     public ResponseEntity<Void> deleteNomination(@PathVariable Long id) {
         log.debug("REST request to delete Nomination : {}", id);
 
-        // Get the nomination
-
-        // Get the person the nomination concerns
         Nomination nomination = nominationService.findOne(id);
-        // Decrement the appropriate count
         modifyCount(nomination, false);
 
-        // If that was successful, delete the nomination
         nominationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("nomination", id.toString())).build();
 
-        // else return an error
+    }
 
+    private void modifyCount(@Valid @RequestBody Nomination nomination, boolean increase) {
+
+        int delta;
+
+        if (increase) {
+            delta = 1;
+        } else {
+            delta = -1;}
+
+        switch (nomination.getValue()) {
+            case "Grow here":
+                nomination.getPerson().setGrowCount(nomination.getPerson().getGrowCount() + delta);
+                break;
+            case "Create with Purpose":
+                nomination.getPerson().setCreateCount(nomination.getPerson().getCreateCount() + delta);
+                break;
+            case "Be great Together":
+                nomination.getPerson().setTogetherCount(nomination.getPerson().getTogetherCount() + delta);
+                break;
+            case "Express with Integrity":
+                nomination.getPerson().setExpressCount(nomination.getPerson().getExpressCount() + delta);
+                break;
+            default: log.error("Value count increment failed - there was a problem in createNomination() in NominationResource.java");
+        }
+
+        personService.save(nomination.getPerson());
     }
 
 }
