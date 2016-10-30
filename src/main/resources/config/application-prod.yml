@@ -33,10 +33,9 @@ spring:
             hibernate.generate_statistics: false
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+            host: 172.26.0.26
+            port: 25
+            protocol: smtp
     thymeleaf:
         cache: true
 
