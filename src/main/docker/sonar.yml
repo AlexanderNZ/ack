@@ -1,8 +1,6 @@
-version: '2'
-services:
-    ack-sonar:
-        container_name: ack-sonar
-        image: sonarqube:6.0-alpine
-        ports:
-            - 9000:9000
-            - 9092:9092
+ack-sonar:
+    container_name: ack-sonar
+    image: sonarqube:6.0-alpine
+    ports:
+        - 9000:9000
+        - 9092:9092
