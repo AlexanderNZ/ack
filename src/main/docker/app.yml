@@ -1,5 +1,5 @@
 ack-app:
-    image: ack
+    image: ci-nexus:443/ack/ack:latest
     external_links:
         - ack-postgresql:postgresql
     environment:
