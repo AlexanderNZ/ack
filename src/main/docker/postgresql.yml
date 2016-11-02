@@ -8,3 +8,5 @@ ack-postgresql:
         - POSTGRES_PASSWORD=
     ports:
         - 5432:5432
+    labels:
+            io.rancher.scheduler.affinity:host_label: name=alex-research
