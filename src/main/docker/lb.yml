@@ -1,0 +1,10 @@
+ack-lb:
+    ports:
+    - 4242:8080
+    labels:
+        io.rancher.scheduler.affinity:host_label: name=alex-research
+    tty: true
+    image: rancher/load-balancer-service
+    links:
+    - ack-app:ack-app
+    stdin_open: true

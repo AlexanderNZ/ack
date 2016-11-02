@@ -6,9 +6,11 @@ ack-app:
         - SPRING_PROFILES_ACTIVE=prod,swagger
         - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/ack
         - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
-    ports:
-        - 8080:8080
 ack-postgresql:
     extends:
         file: postgresql.yml
         service: ack-postgresql
+ack-lb:
+    extends:
+        file: lb.yml
+        service: ack-lb

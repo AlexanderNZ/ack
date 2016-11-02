@@ -1,7 +1,7 @@
 ack-postgresql:
     container_name: ack-postgresql
     image: postgres:9.5.4
-     volumes:
+    volumes:
         - ~/volumes/jhipster/ack/postgresql/:/var/lib/postgresql/
     environment:
         - POSTGRES_USER=ack
