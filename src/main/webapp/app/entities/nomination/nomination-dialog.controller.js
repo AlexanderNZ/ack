@@ -14,6 +14,7 @@
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
+        vm.nomination.nominationDate = new Date();
         vm.save = save;
         vm.people = Person.query();
 
